@@ -1,6 +1,9 @@
 """This module is the gateway to the application"""
 from flask import Flask
 from .routes.send_mail import bp as send_mail_bp
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def create_app():
