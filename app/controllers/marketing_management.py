@@ -1,3 +1,4 @@
+import os
 from flask import request, redirect
 from models.db import DB
 
@@ -9,7 +10,7 @@ def disable_notifications():
         user= users_collection.find_one({"email": email})
         if user:
             users_collection.find_one_and_update({"email": email}, {"$set":{"notifications":False}})
-            return redirect('https://viaja-tech.netlify.app/')   
+            return redirect(os.getenv("REDIRECT_URI"))   
         else:
             return{"error": "user not found"}, 400
     except Exception:
