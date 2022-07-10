@@ -3,6 +3,7 @@ from flask import Flask
 from .routes.send_mail import bp as send_mail_bp
 from .routes.marketing_management import bp as marketing_management_bp
 from dotenv import load_dotenv
+from app.config.marshmallow import MA
 
 load_dotenv()
 
@@ -12,5 +13,6 @@ def create_app():
     app = Flask(__name__)
     app.register_blueprint(send_mail_bp, url_prefix="/api/v1")
     app.register_blueprint(marketing_management_bp, url_prefix="/api/v1/marketing")
+    MA.app = app
 
     return app

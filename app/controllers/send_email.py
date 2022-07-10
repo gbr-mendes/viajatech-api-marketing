@@ -6,14 +6,7 @@ def send_email():
     """Function responsible to deal with the request of send email"""
     if request.json:
         data = request.json
-
-        target_email = data.get('target_email')
-        target_name = data.get('target_name')
-        subject = data.get('subject')
-        body = data.get('body')
-
-        send_single_email(target_email, target_name, subject, body)
+        send_single_email(**data)
         return {"success": "email sended successfuly"}
     
-    return "it's working"
-    
+    return {"error": "You need to provide a valid payload"}    
