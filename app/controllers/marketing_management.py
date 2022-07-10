@@ -1,4 +1,5 @@
 import os
+from bson import ObjectId
 from flask import request, redirect
 import bson.json_util as json_util
 from ..config.db import DB
@@ -47,6 +48,22 @@ def list_emails_marketing():
             return {"error": "An unexpected error occurred"}, 500
     else:
         return {"error": "Authentication required"}
+
+
+def tracking_email_merketing_views():
+    """This function allows the tracking of views of email marketing"""
+    email_id = request.args.get("email_id", None)
+    lead_email = request.args.get("lead_email", None)
+
+    email_marketing_collection = DB["EmailMarketing"]
+    try:
+        email = email_marketing_collection.find_one({"_id": ObjectId(email_id)})
+        if email is not None:
+            if lead_email not in email.get("viwed_by", []):
+                email_marketing_collection.find_one_and_update({"_id": ObjectId(email_id)},{"$push": {"viwed_by": lead_email}})
+        return {"success": "added lead email to viewed_by atribute of this emails marketing"}, 200
+    except Exception:
+        return {"error": "An unexpected error occurred"}, 500
 
 
 def disable_notifications():
