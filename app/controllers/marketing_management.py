@@ -1,7 +1,6 @@
 import os
 from bson import ObjectId
 from flask import request, redirect
-import bson.json_util as json_util
 from ..config.db import DB
 from ..services.send_mail import send_single_email
 from app.schemas.marketing import EmailMarketingSchema
@@ -18,14 +17,24 @@ def create_marketing_capaing():
             data = request.json
             email_marketing_collection = DB["EmailMarketing"]
             try:
-                email = email_marketing_collection.insert_one({**data})
-                if email is not None:
+                email_id = ObjectId()
+                email_db = email_marketing_collection.insert_one({"_id": email_id,**data})
+                if email_db is not None:
                     target_emails = data.pop("target_emails", None)
+                    
+                    track_marketing_url = f"http://localhost:3002/api/v1/marketing/promotions/views-management?email_id={email_id}"
+
                     for email in target_emails:
+                        btn_link = f"http://localhost:3002/api/v1/marketing/promotions/deactivate?lead_email={email}"
                         data["target_email"] = email
-                        send_single_email(**data)
+                        send_single_email(
+                            **data, btn_link=btn_link,
+                            track_marketing_url=track_marketing_url
+                        )
+
                     return {"success": "Campaign created and emails sent"}, 201
-            except Exception:
+            except Exception as e:
+                print(e)
                 return {"error": "An unexpected error occurred"}, 500
         else:
             return {"error": "Authentication required"}, 401
