@@ -2,7 +2,7 @@
 import os
 import requests
 
-def send_single_email(target_email, target_name, subject, body):
+def send_single_email(target_email, subject, body, target_name=None):
     """This function sends  single email to the target"""
     return requests.post(
         os.getenv('MAILGUN_ENDPOINT'),
