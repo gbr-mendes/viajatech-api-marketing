@@ -1,8 +1,8 @@
 import os
 from bson import ObjectId
 from flask import request, redirect
-from ..config.db import DB
-from ..services.send_mail import send_single_email
+from app.config.db import DB
+from app.services.send_mail import send_single_email
 from app.schemas.marketing import EmailMarketingSchema
 from app.models.marketing import EmailMarketing
 from app.utils.external_services import verify_token
