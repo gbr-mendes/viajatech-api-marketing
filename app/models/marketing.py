@@ -3,7 +3,7 @@
 
 class EmailMarketing:
     """Model for email marketing"""
-    def __init__(self, _id, target_emails, subject, body, viwed_by=[]):
+    def __init__(self, _id,subject,body, target_emails=[], viwed_by=[]):
         self._id = str(_id)
         self.target_emails = target_emails
         self.subject = subject

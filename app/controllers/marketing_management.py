@@ -62,7 +62,9 @@ def tracking_email_merketing_views():
         if email is not None:
             if lead_email not in email.get("viwed_by", []):
                 email_marketing_collection.find_one_and_update({"_id": ObjectId(email_id)},{"$push": {"viwed_by": lead_email}})
-        return {"success": "added lead email to viewed_by atribute of this emails marketing"}, 200
+            return {"success": "added lead email to viewed_by atribute of this emails marketing"}, 200
+        else:
+            return {"error": "Marketing campaign not found"}, 404
     except Exception:
         return {"error": "An unexpected error occurred"}, 500
 
@@ -76,7 +78,7 @@ def disable_notifications():
         user= users_collection.find_one({"email": email})
         if user:
             users_collection.find_one_and_update({"email": email}, {"$set":{"notifications":False}})
-            return redirect(os.getenv("REDIRECT_URI"))   
+            return {"success": f"Notifications disabled for user {email}"}  
         else:
             return{"error": "user not found"}, 400
     except Exception:

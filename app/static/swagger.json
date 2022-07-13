@@ -1,0 +1,212 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "description": "Marketing API for marketing camapaings creation and send email management",
+        "version": "1.0.0",
+        "title": "Viaja Tech API Marketing",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth System",
+            "description": "Login endpoint. This endpoint was built in express and node.js .<b>This is not part of the marketing system</b>"
+        },
+        {
+            "name": "Marketing Campaign",
+            "description": "Endpoints for marketing campaign creation, subsequent emailing, usubscribe users and track campaign views"
+        }
+    ],
+    "servers": [
+        {
+            "url": "/"
+        },
+        {
+            "url": "https://viaja-tech-backend.herokuapp.com/"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "schemas": {
+            "MarketingCampaign": {
+                "type": "object",
+                "properties": {
+                    "target_emails": {
+                        "type": "array",
+                        "description": "You can keep the target_emails list as it's. Even if you add your email, you wont recive any due the mailgun limitations",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": [
+                            "gabrielx165@gmail.com",
+                            "gbr.mendes22@gmail.com"
+                        ]
+                    },
+                    "subject": {
+                        "type": "string"
+                    },
+                    "body": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Authentication": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "default": "gabrielx165@gmail.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "default": "password"
+                    }
+                }
+            }
+        }
+    },
+    "paths": {
+        "/api/v1/marketing/promotions/create-campaing": {
+            "post": {
+                "tags": [
+                    "Marketing Campaign"
+                ],
+                "requestBody": {
+                    "required": "true",
+                    "description": "Creates a new marketing campaign on Database and start emailing targets. You can keep the target_emails propertie as it's. Even if you add your email <b>you wont recive any email due the mailgun free-plan limitations</b>",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#components/schemas/MarketingCampaign"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Campaign Created and emails sent"
+                    },
+                    "401": {
+                        "description": "Authentication token was not provided"
+                    }
+                },
+                "summary": "Create Marketing Campaign and send email for the targets"
+            }
+        },
+        "/users/login": {
+            "post": {
+                "tags": [
+                    "Auth System"
+                ],
+                "requestBody": {
+                    "required": "true",
+                    "description": "Get a JWT Token. <b>OBS: You MUST change the server to \"https://viaja-tech-backend.herokuapp.com/\" or it won't work.</b>\n Keep the payload as it's to get a test token. After that, add it on the header of the request with the authorize button on the top of screen",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#components/schemas/Authentication"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success getting a JWT token"
+                    },
+                    "400": {
+                        "description": "Invalid payload"
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                },
+                "summary": "Post the user credentials to get a token"
+            }
+        },
+        "/api/v1/marketing/promotions/campaigns": {
+            "get": {
+                "tags": [
+                    "Marketing Campaign"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success gettil the campaigns"
+                    },
+                    "401": {
+                        "description": "Authentication token was not provided"
+                    }
+                },
+                "summary": "Get all the marketing campaigns created"
+            }
+        },
+        "/api/v1/marketing/promotions/deactivate?lead_email={lead_email}": {
+            "get": {
+                "tags": [
+                    "Marketing Campaign"
+                ],
+                "parameters": [
+                    {
+                        "name": "lead_email",
+                        "in": "path",
+                        "default": "gabrielx165@gmail.com"
+                    }
+                ],
+                "summary": "Disable notifications for the lead provided",
+                "responses": {
+                    "200": {
+                        "description": "Success getting disabling notifications"
+                    },
+                    "400": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/marketing/views-management?email_id={email_id}&lead_email={lead_email}": {
+            "get": {
+                "tags": [
+                    "Marketing Campaign"
+                ],
+                "parameters": [
+                    {
+                        "name": "lead_email",
+                        "in": "path",
+                        "default": "gabrielx165@gmail.com"
+                    },
+                    {
+                        "name": "email_id",
+                        "in": "path",
+                        "default": "62cca90629689c2a6dfca9b1"
+                    }
+                ],
+                "summary": "Add the lead's email to the viewed_by property, stating that this lead has seen this email",
+                "responses": {
+                    "404": {
+                        "description": "Marketing campaign not found"
+                    },
+                    "200": {
+                        "description": "Lead added to the viewed_by attribute of the indicated email"
+                    }
+                }
+            }
+        }
+    }
+}
