@@ -180,7 +180,7 @@
                 }
             }
         },
-        "/api/v1/marketing/views-management?email_id={email_id}&lead_email={lead_email}": {
+        "/api/v1/marketing/promotions/views-management?email_id={email_id}&lead_email={lead_email}": {
             "get": {
                 "tags": [
                     "Marketing Campaign"
