@@ -1,7 +1,7 @@
 """This module encopassing the config for swagger"""
 from flask_swagger_ui import get_swaggerui_blueprint
 
-SWAGGER_URL = "/swagger"
+SWAGGER_URL = "/api/v1/docs"
 API_URL = "/static/swagger.json"
 SWAGGER_CONFIG = {
     "app_name": "Viaja Tech Marketing API"

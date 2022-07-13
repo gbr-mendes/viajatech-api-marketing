@@ -26,7 +26,7 @@ def create_app(test_config=None):
 
     app.register_blueprint(send_mail_bp, url_prefix="/api/v1")
     app.register_blueprint(marketing_management_bp, url_prefix="/api/v1/marketing")
-    app.register_blueprint(swagger_blueprint, url_prefix="/swagger")
+    app.register_blueprint(swagger_blueprint, url_prefix="/api/v1/docs")
 
     MA.app = app
 
