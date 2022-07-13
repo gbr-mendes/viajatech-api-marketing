@@ -1,6 +1,7 @@
 import os
 from bson import ObjectId
-from flask import request, redirect
+from flask import request
+
 from app.config.db import DB
 from app.services.send_mail import send_single_email
 from app.schemas.marketing import EmailMarketingSchema
@@ -8,6 +9,7 @@ from app.models.marketing import EmailMarketing
 from app.utils.external_services import verify_token
 from app.decorators.validate_token import validate_token
 
+HOST = os.getenv("host")
 
 @validate_token
 def create_marketing_capaing():
@@ -20,10 +22,10 @@ def create_marketing_capaing():
             email_db = email_marketing_collection.insert_one({"_id": email_id,**data})
             if email_db is not None:
                 target_emails = data.pop("target_emails", None)
-                track_marketing_url = f"http://localhost:3002/api/v1/marketing/promotions/views-management?email_id={email_id}"
+                track_marketing_url = f"{HOST}/api/v1/marketing/promotions/views-management?email_id={email_id}"
                 
                 for email in target_emails:
-                    btn_link = f"http://localhost:3002/api/v1/marketing/promotions/deactivate?lead_email={email}"
+                    btn_link = f"{HOST}/api/v1/marketing/promotions/deactivate?lead_email={email}"
                     data["target_email"] = email
                     send_single_email(
                         **data, btn_link=btn_link,
