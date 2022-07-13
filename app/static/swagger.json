@@ -194,7 +194,7 @@
                     {
                         "name": "email_id",
                         "in": "path",
-                        "default": "62cca90629689c2a6dfca9b1"
+                        "default": "62ce9e5c4ef9ae8443867e4e"
                     }
                 ],
                 "summary": "Add the lead's email to the viewed_by property, stating that this lead has seen this email",

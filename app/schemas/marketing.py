@@ -5,7 +5,7 @@ from app.config.marshmallow import MA
 
 class EmailMarketingSchema(MA.Schema):
     class Meta:
-        fields = ("_id", "target_emails", "subject", "body", "viwed_by")
+        fields = ("_id", "target_emails", "subject", "body", "viwed_by", "created_at")
     
     @post_load
     def create_email_marketing(self, data, **kwargs):
