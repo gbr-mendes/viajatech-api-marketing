@@ -9,7 +9,7 @@ from app.models.marketing import EmailMarketing
 from app.utils.external_services import verify_token
 from app.decorators.validate_token import validate_token
 
-HOST = os.getenv("host")
+HOST = os.getenv("HOST")
 
 @validate_token
 def create_marketing_capaing():
