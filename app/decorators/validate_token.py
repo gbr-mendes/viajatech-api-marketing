@@ -10,7 +10,6 @@ def validate_token(f):
         try:
             token = request.headers.get("Authorization")
             if token is not None:
-                token = token.split(" ")[1]
                 is_token_valid = verify_token(token)
                 if is_token_valid:
                     return f(*args, **kwargs)
