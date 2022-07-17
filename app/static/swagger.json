@@ -106,7 +106,7 @@
                 "summary": "Create Marketing Campaign and send email for the targets"
             }
         },
-        "/users/login": {
+        "/api/v1/users/login": {
             "post": {
                 "tags": [
                     "Auth System"
