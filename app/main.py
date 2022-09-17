@@ -8,9 +8,9 @@ from app.routes.send_mail import bp as send_mail_bp
 from app.routes.marketing_management import bp as marketing_management_bp
 from app.config.marshmallow import MA
 from app.config.swagger import swagger_blueprint
+from flask_cors import CORS
 
 load_dotenv()
-
 
 
 def create_app(test_config=None):
@@ -25,9 +25,10 @@ def create_app(test_config=None):
         app.config.from_mapping(test_config)
 
     app.register_blueprint(send_mail_bp, url_prefix="/api/v1")
-    app.register_blueprint(marketing_management_bp, url_prefix="/api/v1/marketing")
+    app.register_blueprint(marketing_management_bp,
+                           url_prefix="/api/v1/marketing")
     app.register_blueprint(swagger_blueprint, url_prefix="/api/v1/docs")
 
+    CORS(app)
     MA.app = app
-
     return app
