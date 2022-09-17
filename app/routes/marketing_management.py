@@ -1,4 +1,3 @@
-from crypt import methods
 from flask import Blueprint
 from app.controllers.marketing_management import (
     disable_notifications,
